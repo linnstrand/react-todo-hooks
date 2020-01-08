@@ -1,25 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import Home from './pages/Home';
+import About from './pages/About';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="mdl-layout  mdl-layout--fixed-header">
+        <header className="mdl-layout__header">
+          <div className="mdl-layout__header-row">
+            <span className="mdl-layout-title">Title</span>
+            <div className="mdl-layout-spacer"></div>
+            <nav className="mdl-navigation">
+              <Link to="/" className="mdl-navigation__link">Home</Link>
+              <Link to="/todos" className="mdl-navigation__link">Todos</Link>
+              <Link to="/archive" className="mdl-navigation__link">Archive</Link>
+              <Link to="/about" className="mdl-navigation__link">About</Link>
+            </nav>
+          </div>
+        </header>
+        <main className="mdl-layout__content">
+          <Route path="/" exact component={Home} />
+          <Route path="/about" exact component={About} />
+        </main>
+      </div>
+    </Router>
+
   );
 }
 
