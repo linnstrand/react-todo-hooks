@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { setBullet } from './todoService';
-import TodoCardFooter from './TodoCardFooter';
-import TodoHeader from './TodoHeader';
 import { TodoBody } from './TodoBody';
+import { TodoHeader } from './TodoHeader';
+import { TodoCardFooter } from './TodoCardFooter';
+import Todo from '../../models/Todo';
+import { update, deleteTodo, updateNewTodo, updateTodo } from '../store';
 
-export const TodoCard = (props: any) => {
-  const cardRef = React.createRef();
-  const inputRef = React.createRef();
+export const TodoCard = ({ todo }: { todo: Todo }) => {
+  const cardRef = React.useRef<HTMLDivElement>(null);
+  const inputRef = React.useRef<HTMLDivElement>(null);
 
-  const state = {
-    originalTodo: { ...props.todo },
-    titleActive: false,
-    contentActive: false
-  };
+  const [originalTodo] = useState({ ...todo });
+  const [titleActive, setTitleActive] = useState(false);
+  const [contentActive, setContentActive] = useState(false);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -33,40 +33,46 @@ export const TodoCard = (props: any) => {
     };
   });
 
-  const isNew = () => props.todo.id === 0;
+  const isNew = () => todo.id === 0;
 
   // close todo if leaving focus
   const handleClickOutside = (e: { target: any }) => {
     // If this todo is active, and the card doesn't contain the cliched element, accept changes.
-    if (isActive() && !cardRef.current.contains(e.target)) {
+    if (isActive() && cardRef.current && !cardRef.current.contains(e.target)) {
       close();
     }
   };
 
-  const isActive = () => state.contentActive || state.titleActive;
+  const isActive = () => contentActive || titleActive;
 
   const undo = () => {
-    props.updateTodo(state.originalTodo);
+    if (isNew()) {
+      updateNewTodo(todo);
+    } else {
+      updateTodo(todo);
+    }
     close();
   };
 
   const toggleBullets = () => {
-    let todo = setBullet(props.todo);
-    onChange(todo);
+    if (typeof todo.content == 'string') {
+      onChange({ ...todo, content: setBullet(todo.content) });
+    } else {
+      onChange(todo);
+    }
   };
 
   const onChange = (changed: any) => {
     changed.hasBullets = changed.content.includes('<li>');
-    if (props.onChange) {
-      props.onChange(changed);
+    if (isNew()) {
+      update('newTodo', changed);
     } else {
-      props.updateTodo(changed);
+      update('todos', changed);
     }
   };
 
   const isChanged = () =>
-    props.todo.name !== state.originalTodo.name ||
-    props.todo.content !== state.originalTodo.content;
+    todo.name !== originalTodo.name || todo.content !== originalTodo.content;
 
   const close = () => {
     // setState({ titleActive: false, contentActive: false });
@@ -82,19 +88,19 @@ export const TodoCard = (props: any) => {
       <TodoHeader
         name={todo.name}
         onChange={name => onChange({ ...todo, name: name })}
-        setActive={state => setState({ titleActive: state })}
+        setActive={state => setTitleActive(state)}
       />
       <TodoBody
         content={todo.content}
         targetRef={inputRef}
-        onChange={content => onChange({ ...todo, content: content })}
-        setActive={state => setState({ contentActive: state })}
+        onChange={(content: string) => onChange({ ...todo, content: content })}
+        setActive={(state: boolean) => setContentActive(state)}
       />
       <TodoCardFooter
         isChanged={isChanged() && !isNew()}
         toggleBullets={() => toggleBullets()}
-        deleteTodo={() => props.deleteTodo(todo.id)}
-        setColor={color => onChange({ ...todo, color: color })}
+        deleteTodo={() => deleteTodo(todo.id)}
+        setColor={(color: string) => onChange({ ...todo, color: color })}
         undo={() => undo()}
         close={() => close()}
       />

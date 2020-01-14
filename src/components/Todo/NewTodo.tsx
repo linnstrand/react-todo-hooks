@@ -1,8 +1,11 @@
 import React from 'react';
 import TodoPlaceHolder from './TodoPlaceHolder';
-import TodoCard from './TodoCard';
+import { TodoCard } from './TodoCard';
+import { useSquawk } from '../store';
 
-const withTodoPlaceholder = (WrappedComponent: any) => (props: any) => {
+const withTodoPlaceholder = (WrappedComponent: React.ElementType) => (
+  props: any
+) => {
   return !props.todo.content ? (
     <TodoPlaceHolder {...props} />
   ) : (
@@ -11,11 +14,6 @@ const withTodoPlaceholder = (WrappedComponent: any) => (props: any) => {
 };
 
 const ElementType = withTodoPlaceholder(TodoCard);
+const { newTodo } = useSquawk('newTodo');
 
-export const NewTodo = (props: any) => (
-  <ElementType
-    todo={props.newTodo}
-    onChange={(todo: any) => props.updateNewTodo(todo)}
-    done={(todo: any) => props.addTodo(todo)}
-  />
-);
+export const NewTodo = () => <ElementType todo={newTodo} />;

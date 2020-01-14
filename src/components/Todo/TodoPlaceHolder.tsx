@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import ContentEditable from 'react-contenteditable';
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { setBullet } from './todoService';
 
 export const TodoPlaceHolder = (props: any) => {
-  const inputRef = React.useRef();
+  const inputRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     inputRef.current && inputRef.current.focus();
-  });
+  }, []);
 
   const handleChange = (event: { target: { value: any } }) => {
     let changed = { ...props.todo };
@@ -16,8 +16,7 @@ export const TodoPlaceHolder = (props: any) => {
   };
 
   const toggleBullets = () => {
-    let todo = setBullet(props.todo);
-    props.onChange(todo);
+    props.onChange(setBullet(props.todo.content));
   };
 
   return (
@@ -33,7 +32,7 @@ export const TodoPlaceHolder = (props: any) => {
             html={props.todo.content || ''}
             innerRef={inputRef}
             className={'new-todo-text new-todo-content'}
-            onChange={(event: any) => handleChange(event)}
+            onChange={(event: ContentEditableEvent) => handleChange(event)}
           />
         </div>
       </div>

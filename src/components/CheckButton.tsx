@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const CheckButton = props => (
+export const CheckButton = (props: { toggleCheck: () => () => any }) => (
   <div
     className={'select-button'}
     role='button'

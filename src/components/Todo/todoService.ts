@@ -1,9 +1,6 @@
-export const setBullet = t => {
-  let todo = Object.assign({}, t);
-  let content = todo.content;
+export const setBullet = (content: string): string  => {
   if (!content) {
-    todo.content = '<ul><li></li></ul>';
-    return todo;
+    return '<ul><li></li></ul>';
   }
   if (content.includes('<li>')) {
     content = content.replace(/(<ul>||<\/ul>)+/g, '');
@@ -15,14 +12,11 @@ export const setBullet = t => {
     }
     content = `<ul>${content}</ul>`;
   }
-  todo.content = content;
-  return todo;
+  return content;
 };
 
-export const cleanTodo = t => {
-  let todo = Object.assign({}, t);
-  let content = todo.content.replace('<li></li>', '');
-  content = todo.content.replace('<li><br></li>', '');
-  todo.content = content;
-  return todo;
+export const cleanTodo = (content: string): string => {
+  content = content.replace('<li></li>', '');
+  content = content.replace('<li><br></li>', '');
+  return content;
 };
