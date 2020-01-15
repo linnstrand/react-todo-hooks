@@ -1,10 +1,88 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8f9fa;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
 main {
   margin-top: 1rem;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.position-absolute {
+  position: absolute;
 }
 
 .todo-cards {
   display: flex;
   flex-wrap: wrap;
+}
+
+input,
+textarea {
+  border: none;
+}
+
+.create-todo-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+.create-todo-button {
+  padding: 0.5em;
+}
+
+.todo-card {
+  position: relative;
+  color: #4c4c4c;
+  margin: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  max-width: 400px;
+  &:hover {
+    opacity: 1;
+    box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.15);
+    .select-button {
+      opacity: 1;
+      display: inline;
+    }
+    .todo-card-action {
+      display: inline;
+    }
+  }
+  &.is-editing {
+    box-shadow: 0 0.125rem 10rem 10px rgba(0, 0, 0, 0.075);
+    .card-title {
+      color: black;
+    }
+    .card-text {
+      color: black;
+    }
+  }
+
+  &.is-checked {
+    color: blue;
+    .select-button {
+      display: inline;
+      opacity: 1;
+    }
+  }
+}
+
+[contenteditable='true']:active,
+[contenteditable='true']:focus {
+  border: none;
+  outline: none;
 }
 
 .card-body {
@@ -18,12 +96,10 @@ main {
 
 .card-title {
   margin-bottom: 0;
-  line-height: 2rem;
-  font-size: 1.2rem;
 }
 
 .card-text {
-  font-size: .875rem;
+  font-size: 0.875rem;
 }
 
 .card-footer {
@@ -32,28 +108,20 @@ main {
   display: flex;
   justify-content: space-between;
   border-top: none;
-
+  height: 2rem;
   .btn-light {
     font-size: 0.875rem;
-    padding: .25rem .5rem;
+    padding: 0.25rem 0.5rem;
     margin-right: 0.25rem;
     margin-bottom: 0.25rem;
   }
 }
 
-.select-button {
-  position: absolute;
-  background-color: #333;
-  color: white;
-  border-radius: 50%;
-  width: 1.4rem;
-  text-align: center;
-  line-height: 1.4rem;
-  top: -0.5rem;
-  left: -0.5rem;
-  cursor: pointer;
-  opacity: 0;
-  transition: 200ms;
+.close-btn {
+  visibility: hidden;
+  .is-editing & {
+    visibility: visible;
+  }
 }
 
 .todo-card-action {
@@ -65,74 +133,47 @@ main {
   line-height: 1.2rem;
   font-size: 1.2rem;
   margin: 2px;
-
   &:hover {
     color: blue;
   }
-
   &:not(:first-of-type) {
     margin-left: 0.5rem;
   }
 }
 
-.todo-card {
-  position: relative;
-  color: #4c4c4c;
-  margin: 0.5rem;
-  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
-
-  &:hover {
-    opacity: 1;
-    box-shadow: 0 .25rem 1rem rgba(0, 0, 0, .15);
-
-    .select-button {
-      opacity: 1;
-      display: inline;
-    }
-
-    .todo-card-action {
-      display: inline;
-    }
-  }
-
-  &.is-editing {
-    box-shadow: 0 0.125rem 10rem 10px rgba(0, 0, 0, 0.075);
-
-    .card-title {
-      color: black;
-    }
-
-    .card-text {
-      color: black;
-      font-weight: 500;
-    }
-  }
-
-  &.is-checked {
-    color: blue;
-
-    .select-button {
-      background-color: blue;
-      display: inline;
-      opacity: 1;
-    }
-  }
-}
-
-input,
-textarea {
-  border: none;
+.select-button {
+  position: absolute;
+  background-color: #333;
+  color: white;
+  border-radius: 50%;
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 0.8rem;
+  text-align: center;
+  line-height: 1.2rem;
+  top: -0.5rem;
+  left: -0.5rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: 200ms;
 }
 
 // new todo
 .new-todo-card {
-  margin: .5rem auto 1rem auto;
-  flex-direction: row;
-  max-width: 500px;
+  margin: 0.5rem auto 1rem auto;
+  width: 350px;
+  .todo-card {
+    width: 500px;
+  }
+  .todo-placeholder {
+    flex-direction: row;
+  }
+  .close-btn {
+    visibility: visible;
+  }
 }
 
 .new-todo-content {
-
   &:focus,
   &:active {
     background-color: white;
@@ -153,11 +194,10 @@ textarea {
 }
 
 .new-todo-text {
-  font-size: .875rem;
+  font-size: 0.875rem;
   padding: 0.25rem 0.5rem;
   line-height: 1.5rem;
   outline: none;
-
   ul {
     margin-bottom: 0.25rem;
     padding-inline-start: 1.3rem;
@@ -177,7 +217,7 @@ textarea {
   color: black;
 }
 
-.todo-placeholder {
+.todo-placeholder-title {
   font-weight: bold;
   color: grey;
   pointer-events: none;
@@ -189,7 +229,7 @@ textarea {
   line-height: 1;
 }
 
-.bullets-active {
+.bullets-active .bullets-btn {
   color: orange;
 }
 
@@ -202,7 +242,6 @@ textarea {
   width: 1.5rem;
   margin: 2px;
   cursor: pointer;
-
   &:hover {
     border-color: #bababa !important;
   }
@@ -219,19 +258,8 @@ textarea {
   width: 100px;
   transition: 200ms;
   opacity: 0;
-
   &.shown {
     visibility: visible;
     opacity: 1;
   }
-}
-
-.create-todo-actions {
-  display: flex;
-  justify-content: space-around;
-
-}
-
-.create-todo-button {
-  padding: 0.5em;
 }

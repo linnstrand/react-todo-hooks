@@ -1,4 +1,4 @@
-import React, {  } from 'react';
+import React from 'react';
 import Todo from '../../models/Todo';
 import { NewTodo } from './NewTodo';
 import { TodoCard } from './TodoCard';
@@ -9,16 +9,18 @@ export const Todos = () => {
 
   return (
     <React.Fragment>
-      <div className='d-flex new-todo-card'>
+      <div className='mdl-grid new-todo-card'>
         <NewTodo />
       </div>
-      {todos.map((todo: Todo) => (
-        <div
-          key={todo.id}
-          className={'d-inline-flex align-items-start flex-wrap'}>
-          <TodoCard todo={todo} />
-        </div>
-      ))}
+      <div className='mdl-grid'>
+        {todos.map((todo: Todo) => (
+          <div
+            key={todo.id}
+            className={'d-inline-flex align-items-start flex-wrap'}>
+            <TodoCard todo={todo} />
+          </div>
+        ))}
+      </div>
     </React.Fragment>
   );
 };

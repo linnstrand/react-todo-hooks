@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable';
 import { setBullet } from './todoService';
+import { updateNewTodo } from '../store';
 
 export const TodoPlaceHolder = (props: any) => {
   const inputRef = React.useRef<HTMLDivElement>(null);
@@ -10,26 +11,23 @@ export const TodoPlaceHolder = (props: any) => {
   }, []);
 
   const handleChange = (event: { target: { value: any } }) => {
-    let changed = { ...props.todo };
-    changed.content = event.target.value;
-    props.onChange(changed);
+    updateNewTodo({ ...props.todo, content: event.target.value });
   };
 
   const toggleBullets = () => {
-    props.onChange(setBullet(props.todo.content));
+    const content = setBullet(props.todo.content);
+    updateNewTodo({ ...props.todo, content: content });
   };
 
   return (
     <div className='d-flex card todo-card todo-placeholder'>
       <div className='new-todo-body'>
         <div className='new-todo-text'>
-          {!props.todo.content && (
-            <div className='position-absolute new-todo-text todo-placeholder-title'>
-              Write a note!
-            </div>
-          )}
+          <div className='position-absolute new-todo-text todo-placeholder-title'>
+            Write a note!
+          </div>
           <ContentEditable
-            html={props.todo.content || ''}
+            html={props.todo.content}
             innerRef={inputRef}
             className={'new-todo-text new-todo-content'}
             onChange={(event: ContentEditableEvent) => handleChange(event)}

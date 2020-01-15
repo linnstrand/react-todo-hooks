@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Home from './pages/Home';
-import About from './pages/About';
 
 const App: React.FC = () => {
   return (
@@ -21,7 +20,6 @@ const App: React.FC = () => {
         </header>
         <main className="mdl-layout__content">
           <Route path="/" exact component={Home} />
-          <Route path="/about" exact component={About} />
         </main>
       </div>
     </Router>

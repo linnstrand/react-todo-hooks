@@ -4,7 +4,7 @@ import { TodoBody } from './TodoBody';
 import { TodoHeader } from './TodoHeader';
 import { TodoCardFooter } from './TodoCardFooter';
 import Todo from '../../models/Todo';
-import { update, deleteTodo, updateNewTodo, updateTodo } from '../store';
+import { deleteTodo, updateNewTodo, updateTodo, finishNewTodo } from '../store';
 
 export const TodoCard = ({ todo }: { todo: Todo }) => {
   const cardRef = React.useRef<HTMLDivElement>(null);
@@ -62,12 +62,12 @@ export const TodoCard = ({ todo }: { todo: Todo }) => {
     }
   };
 
-  const onChange = (changed: any) => {
+  const onChange = (changed: Todo) => {
     changed.hasBullets = changed.content.includes('<li>');
     if (isNew()) {
-      update('newTodo', changed);
+      updateNewTodo(changed);
     } else {
-      update('todos', changed);
+      updateTodo(changed);
     }
   };
 
@@ -75,7 +75,11 @@ export const TodoCard = ({ todo }: { todo: Todo }) => {
     todo.name !== originalTodo.name || todo.content !== originalTodo.content;
 
   const close = () => {
-    // setState({ titleActive: false, contentActive: false });
+    setTitleActive(false);
+    setContentActive(false);
+    if (isNew()) {
+      finishNewTodo(todo);
+    }
   };
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const CheckButton = (props: { toggleCheck: () => () => any }) => (
+export const CheckButton = (props: { toggleCheck: () => MouseEvent }) => (
   <div
     className={'select-button'}
     role='button'

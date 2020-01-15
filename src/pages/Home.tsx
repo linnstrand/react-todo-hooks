@@ -1,5 +1,5 @@
 import React from 'react';
-import Todos from '../components/Todo/Todos';
+import { Todos } from '../components/Todo/Todos';
 
 const Home = () => {
   return (
@@ -21,7 +21,7 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <div className='mdl-grid'>
+      <div className=''>
         <Todos />
       </div>
     </div>

@@ -1,7 +1,10 @@
 import React from 'react';
 import { COLORS } from '../colors';
 
-export const ColorOptions = (props: { visibleColor: any; setColor: (hex: string) => void; }) => {
+export const ColorOptions = (props: {
+  visibleColor: boolean;
+  setColor: (hex: string) => void;
+}) => {
   return (
     <div
       className={
